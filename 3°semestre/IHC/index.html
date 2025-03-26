@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I.H.C Acessibilidade</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+
+<body class="body">
+    <header class="cabeca">
+        <h1>Interação humano computador</h1>
+        <button id="toggleTheme">Alternar Tema</button>
+        
+        
+    </header>
+
+    <h2 class="cabeca">Teste de acessibilidade</h2>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">IHC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#carouselExample">Galeria</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#formulario">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<br>
+<p class="cabeca">Essa é uma aplicação web com o intuito de testar parametros de acessibilidade</p>
+
+    <section class="container mt-4">
+        <div class="carousel slide" data-bs-ride="carousel" id="carouselExample">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" tabindex="0"></button>
+                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2" tabindex="0"></button>
+                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3" tabindex="0"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="img/img1.jpg?random=1" alt="um cafezinho"
+                    class="d-block w-100">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Um cafezinho</h5>
+                        <p>Uma xicara de café</p>
+                    </div>
+                        
+                </div>
+                <div class="carousel-item">
+                    <img src="img/img2.jpg?random=2" alt="mais um cafezinho"
+                    class="d-block w-100">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Mais um cafezinho</h5>
+                        <p>Mais uma xicara de café</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="img/img3.jpg?random=3" alt="apenas mais um café"
+                    class="d-block w-100">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Apenas mais um café</h5>
+                        <p>A ultima xicara de café</p>
+                    </div>
+
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+
+     <!-- 🔹 Formulário de Contato -->
+     <section class="container mt-5" id="formulario">
+        <h2 class="text-center">Entre em Contato</h2>
+        <form class="mt-4">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" alt="digite seu nome" id="nome" placeholder="Digite seu nome" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="email" class="form-control" alt="digite seu email" id="email" placeholder="Digite seu e-mail" required>
+            </div>
+            <div class="mb-3">
+                <label for="mensagem" class="form-label">Mensagem</label>
+                <textarea class="form-control" alt="digite sua mensagem" id="mensagem" rows="4" placeholder="Digite sua mensagem" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary w-100">Enviar</button>
+        </form>
+    </section>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+
+    <!-- 🔹 Suporte para Teclado -->
+    <script>
+        document.addEventListener("keydown", function (event) {
+            let carousel = document.getElementById("carouselExample");
+            if (event.key === "ArrowLeft") {
+                carousel.querySelector(".carousel-control-prev").click();
+            } else if (event.key === "ArrowRight") {
+                carousel.querySelector(".carousel-control-next").click();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+.cabeca{
+    background: linear-gradient(to right, #ff0000, #ffffff);;
+    color:rgba(255, 255, 255, 0.925);
+    padding-left: 30%;
+    
+}
+
+.carousel{
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.carousel img{
+height: 300px; /* Altura desejada */
+object-fit: cover;
+}
+
+.body{
+    background: linear-gradient(to right, #ff0000, #ffffff);;
+}
+
+.dark-mode{
+    background: linear-gradient(to right, #000000, #ffffff); /* Fundo escuro */
+    color: white;
+}
+
+.dark-mode .cabeca {
+    background: linear-gradient(to right, #000000, #ffffff); /* Gradiente escuro */
+    color: white;
+}
+
+#toggleTheme {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    color: rgb(2, 2, 2);
+    background-color: #ffffff;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+/* Navbar com as cores do tema */
+.navbar {
+    background: linear-gradient(to right, #ff0000, #ffffff); /* Cor do fundo no tema claro */
+    transition: background 0.3s; /* Transição suave */
+}
+
+/* Estilo da navbar no modo escuro */
+.dark-mode .navbar {
+    background: linear-gradient(to right, #000000, #ffffff); /* Cor do fundo no tema escuro */
+    transition: background 0.3s; /* Transição suave */
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+    color: white !important; /* Garantir que o texto da navbar seja sempre branco */
+}
+
+.navbar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar .nav-link:hover {
+    color: rgba(255, 255, 255, 1); /* Cor mais forte no hover */
+}
