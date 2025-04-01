@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
  
 //importação da biblioteca express
-import express from "express"
+const express = require('express');
 
 //const { userController } = require(",/src/controller/user");
  
@@ -54,28 +54,63 @@ const clients = [
         email: "maria.oliveira@example.com"
     }
 ];
- 
-//define método HTTP Get que responde no path /product/:id
-app.get("/product/:id", (req: Request, res: Response) => {
-    console.log(req.params.id);
- 
-    const product = products.find((product) => {
-        return product.id == Number(req.params.id)
-    })
- 
-    if (!product) {
-        res.status(404).send();
-        return;
+
+const employees = [
+    {
+        id: 1,
+        name: "Gabriel Correa",
+        document: "40560741863",
+        position: "Analista de TI",
+        workingHours: 40,
+        salary: 25000.00,
+        zipCode: "18111-385"
+    },
+    {
+        id: 2,
+        name: "Miguel Ribeiro",
+        document: "98765432109",
+        position: "Gerente de Marketing",
+        workingHours: 40,
+        salary: 3500.00,
+        zipCode: "21434-123"
     }
+];
  
-    //responde requisição com o produto encontrado
-    res.status(200).json(product);
-});
- 
-//define método HTTP Get que responde no path /product
+// Rota GET para listar todos os produtos com filtros
 app.get("/product", (req: Request, res: Response) => {
-    console.log(req.query);
-    res.status(200).json(products);
+    const { name, brand, supplier, stockId } = req.query;
+
+    let filteredProducts = products;
+
+    // Filtro por name (parcial e case-insensitive)
+    if (name) {
+        filteredProducts = filteredProducts.filter(product =>
+            product.name.toLowerCase().includes((name as string).toLowerCase())
+        );
+    }
+
+    // Filtro por brand (parcial e case-insensitive)
+    if (brand) {
+        filteredProducts = filteredProducts.filter(product =>
+            product.brand.toLowerCase().includes((brand as string).toLowerCase())
+        );
+    }
+
+    // Filtro por supplier (parcial e case-insensitive)
+    if (supplier) {
+        filteredProducts = filteredProducts.filter(product =>
+            product.supplier.toLowerCase().includes((supplier as string).toLowerCase())
+        );
+    }
+
+    // Filtro por stockId (igual, sem considerar o case)
+    if (stockId) {
+        filteredProducts = filteredProducts.filter(product =>
+            product.stockId === parseInt(stockId as string)
+        );
+    }
+
+    res.status(200).json(filteredProducts);
 });
  
 //cria um produto
@@ -88,12 +123,18 @@ app.post("/product", (req: Request, res: Response) => {
  
 app.delete("/product/:id", (req: Request, res: Response) => {
     const { id } = req.params;
- 
+
+    // Verifica se o produto com o id existe
     const index = products.findIndex(product => product.id === parseInt(id));
- 
+
     if (index === -1) {
-        // Caso não encontre o produto
         return res.status(404).send({ error: "Produto não encontrado" });
+    }
+
+    // Condição para verificar se o produto não pode ser excluído
+    // Exemplo: Se o produto com id 1 não puder ser excluído, podemos usar a seguinte condição:
+    if (parseInt(id) === 1) {
+        return res.status(400).send({ error: "Este produto não pode ser excluído!" });
     }
  
     // Remover o produto do array
@@ -124,15 +165,34 @@ app.put("/product/:id", (req: Request, res: Response) => {
  
 // ------------------------------------------------------
  
-// Rota GET para buscar um cliente por ID
-app.get("/client/:id", (req: Request, res: Response) => {
-    const client = clients.find(client => client.id === Number(req.params.id));
- 
-    if (!client) {
-        return res.status(404).send();
+// Rota GET para listar todos os clientes com filtros
+app.get("/client", (req: Request, res: Response) => {
+    const { name, document, phone } = req.query;
+
+    let filteredClients = clients;
+
+    // Filtro por name (parcial e case-insensitive)
+    if (name) {
+        filteredClients = filteredClients.filter(client =>
+            client.name.toLowerCase().includes((name as string).toLowerCase())
+        );
     }
- 
-    res.status(200).json(client);
+
+    // Filtro por document (parcial e case-insensitive)
+    if (document) {
+        filteredClients = filteredClients.filter(client =>
+            client.document.includes((document as string)) // Sem toLowerCase porque o documento é numérico
+        );
+    }
+
+    // Filtro por phone (parcial e case-insensitive)
+    if (phone) {
+        filteredClients = filteredClients.filter(client =>
+            client.phone.includes((phone as string)) // Também sem toLowerCase, pois é numérico
+        );
+    }
+
+    res.status(200).json(filteredClients);
 });
  
 // Rota GET para listar todos os clientes
@@ -150,14 +210,22 @@ app.post("/client", (req: Request, res: Response) => {
 // Rota DELETE para excluir um cliente por ID
 app.delete("/client/:id", (req: Request, res: Response) => {
     const { id } = req.params;
- 
+
+    // Verifica se o cliente com o id existe
     const index = clients.findIndex(client => client.id === parseInt(id));
- 
+
     if (index === -1) {
         return res.status(404).send({ error: "Cliente não encontrado" });
     }
- 
+
+    // Condição para verificar se o cliente não pode ser excluído
+    if (parseInt(id) === 1) {
+        return res.status(400).send({ error: "Este cliente não pode ser excluído!" });
+    }
+
+    // Remover o cliente da lista
     clients.splice(index, 1);
+
     res.status(200).send({ message: "Cliente deletado com sucesso!" });
 });
  
@@ -174,6 +242,80 @@ app.put("/client/:id", (req: Request, res: Response) => {
  
     clients[index] = { ...clients[index], ...updatedClient };
     res.status(200).send({ message: "Cliente atualizado com sucesso!" });
+});
+
+// Rota GET para listar todos os funcionários com filtros
+app.get("/employee", (req: Request, res: Response) => {
+    const { name, position, workingHours } = req.query;
+
+    let filteredEmployees = employees;
+
+    // Filtro por name (parcial e case-insensitive)
+    if (name) {
+        filteredEmployees = filteredEmployees.filter(employee =>
+            employee.name.toLowerCase().includes((name as string).toLowerCase())
+        );
+    }
+
+    // Filtro por position (parcial e case-insensitive)
+    if (position) {
+        filteredEmployees = filteredEmployees.filter(employee =>
+            employee.position.toLowerCase().includes((position as string).toLowerCase())
+        );
+    }
+
+    // Filtro por workingHours
+    if (workingHours) {
+        filteredEmployees = filteredEmployees.filter(employee =>
+            employee.workingHours === parseInt(workingHours as string)
+        );
+    }
+
+    res.status(200).json(filteredEmployees);
+});
+
+// Rota POST para criar um novo funcionário
+app.post("/employee", (req: Request, res: Response) => {
+    const employee = req.body;
+    employees.push(employee);
+    res.status(201).send();
+});
+
+//rota para excluir funcionario
+app.delete("/employee/:id", (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    // Verifica se o funcionário com o id existe
+    const index = employees.findIndex(employee => employee.id === parseInt(id));
+
+    if (index === -1) {
+        return res.status(404).send({ error: "Funcionário não encontrado" });
+    }
+
+    // Condição para verificar se o funcionário não pode ser excluído
+    if (parseInt(id) === 1) {
+        return res.status(400).send({ error: "Este funcionário não pode ser excluído!" });
+    }
+
+    // Remover o funcionário da lista
+    employees.splice(index, 1);
+
+    res.status(200).send({ message: "Funcionário deletado com sucesso!" });
+});
+
+// Rota PUT para atualizar um funcionário por ID
+app.put("/employee/:id", (req: Request, res: Response) => {
+    const { id } = req.params;
+    const updatedEmployee = req.body;
+
+    const index = employees.findIndex(employee => employee.id === parseInt(id));
+
+    if (index === -1) {
+        return res.status(404).send({ error: "Funcionário não encontrado" });
+    }
+
+    employees[index] = { ...employees[index], ...updatedEmployee };
+    res.status(200).send({ message: "Funcionário atualizado com sucesso!" });
 });
  
 //inicia aplicação na porta 3000
